@@ -8,3 +8,19 @@
 .idea/tabu_sport_scheduling_tournament.iml
 
 .idea/vcs.xml
+
+__pycache__/model_sts.cpython-36.pyc
+
+__pycache__/tabu.cpython-36.pyc
+
+genetique/__pycache__/algorithme_genetique.cpython-36.pyc
+
+genetique/__pycache__/classes.cpython-36.pyc
+
+genetique/__pycache__/final_plotter.cpython-36.pyc
+
+genetique/__pycache__/operator_gen_ALL_ALGO.cpython-36.pyc
+
+genetique/__pycache__/operator_selector_ALL_ALGO.cpython-36.pyc
+
+genetique/__pycache__/plot.cpython-36.pyc

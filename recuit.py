@@ -1,4 +1,4 @@
-import tabu
+import model_sts
 import random
 import math
 import sys
@@ -98,7 +98,7 @@ def recuit_simule(tournament):
     return best_configuration
 
 
-tournament = tabu.Tournament(number_of_teams)
+tournament = model_sts.Tournament(number_of_teams)
 if tournament:
     recuit_simule(tournament)
 

@@ -10,7 +10,7 @@ import classes
 
 import numpy as np
 from matplotlib import gridspec
-import tabu
+
 
 class Algorithme_genetique:
     def __init__(self, parametres):

@@ -1,5 +1,5 @@
 import random
-import tabu
+import model_sts
 def basic_operator(population):
     generation = 0
     while population.select_best_agents(1).get(0).score() != 1.0:

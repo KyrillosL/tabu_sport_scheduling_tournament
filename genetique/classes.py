@@ -18,7 +18,7 @@ from copy import copy
 
 import numpy as np
 import sys
-import tabu
+import model_sts
 import copy
 np.set_printoptions(threshold=sys.maxsize)
 
@@ -73,7 +73,7 @@ class Population:
         self.nb_agent = nb_agent
         self.agents = []
         for x in range(nb_agent):
-            tournament = tabu.Tournament(taille_agent)
+            tournament = model_sts.Tournament(taille_agent)
             tournament.initial_configuration()
             self.agents.append(Agent(  tournament, x))
         self.sort()
