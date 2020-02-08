@@ -47,24 +47,12 @@ class Operator_Selector():
 class  basic_operator_1_flip(Operator_Selector):
     def apply(self, agent, keep_degrading):
         self.agent=agent
-        x = self.list_operators[0]
-        #print("BEFORE COMPUTING", agent)
-        #print("BEFORE", x.score, self.agent.get_score())
+        x = self.list_operators[1]
         x.compute_Score(agent)
-        #print("AFTER  COMPUTING", agent)
-        #print("AFTER", x.score, self.agent.get_score())
-        #input()
         if keep_degrading or x.score < self.agent.get_score():
-            #print("OK")
-            #if agent not in agent.previous_state:
-
-
             new_agent = x.mutate(self.agent)
-            #new_agent.add_previous_state(agent)
             x.times_used+=1
             return new_agent
-            #else:
-            #    return self.agent
         else:
             return self.agent
 
@@ -84,11 +72,9 @@ class best_operator_oracle(Operator_Selector):
 
         if keep_degrading or best_operator.score > self.agent.get_score():
             new_agent = best_operator.mutate(self.agent)
-
             # self.population.select_best_agents(1).set(0, new_agent)
             best_operator.times_used += 1
             best_operator.probability = 0
-
 
             return new_agent
         else:

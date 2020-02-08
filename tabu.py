@@ -173,10 +173,9 @@ class List_Match:
     def swap_periods_from_week(self, periods, week):
         period_1= periods[0]
         period_2= periods[1]
-        #print("swapping period ", period_1," and period ", period_2,"from week ", week)
-        #tmp_match = copy.deepcopy( self.get_match(period_1, week))
+
         tmp_match = self.get_match(period_1, week).__copy__()
-        #print(tmp_match)
+
 
         m1 = self.get_match(period_1, week)
         m2 = self.get_match(period_2, week)
@@ -284,14 +283,20 @@ class Tournament:
             self.list_match.append(match)
 
 
+    def get_random_week_and_period(self):
+        random_week = random.randrange(1, self.weeks)
+        random_periods = random.sample(range(1, self.periods + 1), 2)
+
+        return random_week, random_periods
+
+
     def arbitrary_neighborhood(self):
-        random_periods=[]
-        while len(random_periods)!=2:
-            random_week = random.randrange(1, self.weeks)
-            random_periods.clear()
-            random_periods= random.sample(self.list_match.get_available_period_for_week(random_week),2)
-        #print("SWAPPING : ", random_periods, random_week)
+
+        random_week ,random_periods = self.get_random_week_and_period()
         self.list_match.swap_periods_from_week(random_periods ,random_week)
+
+        #random_match_to_swap = random.sample(range(1,self.teams+1), 2)
+        #copy_
 
 
 

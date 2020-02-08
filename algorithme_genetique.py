@@ -89,9 +89,6 @@ class Algorithme_genetique:
             list_data=[]
 
 
-
-
-
             while self.population.select_best_agents(1).get(0).get_score() != 0 and stop_after>= self.iteration :
                 #print(self.population)
                 #input()
@@ -109,15 +106,14 @@ class Algorithme_genetique:
 
                     list_removed = self.population.remove_worst_agents(self.nb_indiv_to_select)
                     #list_removed = self.population.remove_old_agents(self.nb_indiv_to_select)
-                    pop = self.population.select_tournament_agents(self.nb_indiv_to_select, 10)
+                    #pop = self.population.select_tournament_agents(self.nb_indiv_to_select, 100)
+                    pop = self.population.select_best_agents(self.nb_indiv_to_select)
                     for x in range(self.nb_indiv_to_select):
                         new_agent = self.method.apply(pop.agents[x], keep_degrading)
                         #new_agent = self.method.apply(self.population.select_best_agents(self.nb_indiv_to_select).get(x), keep_degrading)
                         new_agent.id = list_removed[x]
                         self.population.add_an_agent(new_agent, new_agent.id)
                     #print(self.population)
-
-
 
 
                     '''
@@ -200,6 +196,6 @@ class Algorithme_genetique:
             myplot.show(block=True)
         '''
 
-        return final_plotter.final_time, final_plotter.final_score
+        #return final_plotter.final_time, final_plotter.final_score
 
 

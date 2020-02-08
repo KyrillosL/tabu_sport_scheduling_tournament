@@ -67,13 +67,13 @@ class Agent:
 
 
 class Population:
-    def __init__(self, nb_agent=0, taille_agent=0):
+    def __init__(self, nb_agent=0, taille_agent=0, ):
 
         self.taille_agent=taille_agent
         self.nb_agent = nb_agent
         self.agents = []
         for x in range(nb_agent):
-            tournament = tabu.Tournament(8)
+            tournament = tabu.Tournament(taille_agent)
             tournament.initial_configuration()
             self.agents.append(Agent(  tournament, x))
         self.sort()

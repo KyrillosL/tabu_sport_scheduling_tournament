@@ -8,7 +8,7 @@ matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 
 
-number_of_teams= 14
+number_of_teams= 12
 max_score = (number_of_teams/2)*(number_of_teams-1)
 
 
