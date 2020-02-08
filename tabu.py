@@ -9,6 +9,9 @@ class Match:
         self.week = week
         self.period = period
 
+    def __copy__(self):
+        return Match(self.team1, self.team2, self.week, self.period)
+
     def __str__(self):
         return str(self.team1) + " vs " + str(self.team2) + " w: "+ str(self.week)+" p: "+ str(self.period)
 
@@ -22,34 +25,24 @@ class Match:
         return False
 
 
-class Team:
-    def __init__(self, number):
-        self.number=number
-        self.period=[]
-        self.week =[]
 
-    def add_week(self, week):
-        self.week.append(week)
-
-    def add_period(self, p):
-        self.period.append(p)
-
-    def remove_period(self,p):
-        self.period.remove(p)
-
-    def get_occurence_period(self, p):
-        return self.period.count(p)
 
 
 
 
 class List_Match:
-    def __init__(self, weeks, periods, nb_teams):
+    def __init__(self, weeks, periods):
         self.matchs = []
         self.periods= periods
         self.weeks = weeks
-        self.evaluation=0
-        self.nb_teams=nb_teams
+
+    def __copy__(self):
+        l =List_Match(self.weeks, self.periods)
+        for m in self.matchs:
+           l.append(m.__copy__())
+
+        #l.matchs = copy.deepcopy(self.matchs)
+        return l
 
     def __eq__(self, other):
         """Overrides the default implementation"""
@@ -82,7 +75,6 @@ class List_Match:
             string_to_return += " "
         return  string_to_return
 
-
     def __repr__(self):
         '''
         # string_to_return= str(self.periods)+ str(self.weeks)+"\n"
@@ -106,23 +98,9 @@ class List_Match:
         return  string_to_return
 
 
-    def normalized_string(self):
-        # string_to_return= str(self.periods)+ str(self.weeks)+"\n"
-        string_to_return = ""
-        for i in range(1, self.weeks + 1):
-            to_print = (x for x in self.matchs if x.week == i)
-            string_to_return += "Week : "
-            string_to_return += str(i)
-            string_to_return += "\n"
-            for j in to_print:
-                string_to_return += str(j)
-                string_to_return += "\n"
-            string_to_return += "\n"
-        return string_to_return
 
     def append(self, match):
         self.matchs.append(match)
-
 
     def add_diagonal_from_graph(self,i,j,k,l, list_period ):
         orig_size = len(self.matchs)
@@ -152,9 +130,11 @@ class List_Match:
         return orig_size != len(self.matchs)
 
     def get_week_from_match(self, team1, team2):
+
         for x in self.matchs:
             if ( x.team1 == team1 and x.team2 == team2)  or ( x.team2 == team1 and x.team1 == team2) :
                 return x.week
+
 
     def get_week_from_team(self, team):
         list = []
@@ -184,35 +164,21 @@ class List_Match:
                 return x
 
     def get_occurence_team_in_period(self, t,p):
-
-        #return t.get_occurence_period(p)
-
         number=0
-        res = (x for x in self.matchs if (x.team1 == t or x.team2 == t) and x.period == p)
-
-        for r in res:
-            number+=1
-        return number
-
-
-        '''
         for m in self.matchs:
             if (m.team1 ==t or m.team2 == t ) and m.period==p:
                 number+=1
         return number
-        '''
+
     def swap_periods_from_week(self, periods, week):
         period_1= periods[0]
         period_2= periods[1]
         #print("swapping period ", period_1," and period ", period_2,"from week ", week)
-        #tmp_match = [list(x) for x in s]
         #tmp_match = copy.deepcopy( self.get_match(period_1, week))
-        tmp_match_to_get = self.get_match(period_1, week)
-        tmp_match = Match(tmp_match_to_get.team1, tmp_match_to_get.team2, tmp_match_to_get.week, tmp_match_to_get.period)
+        tmp_match = self.get_match(period_1, week).__copy__()
         #print(tmp_match)
 
         m1 = self.get_match(period_1, week)
-
         m2 = self.get_match(period_2, week)
 
         m1.team1 = m2.team1
@@ -220,6 +186,8 @@ class List_Match:
 
         m2.team1 = tmp_match.team1
         m2.team2 = tmp_match.team2
+
+        return self
 
 
     def get_size(self):
@@ -230,68 +198,19 @@ class List_Match:
     def in_list(self, match):
         return match in self.matchs
 
-
-    def neighborhood_opt(self):
-        matrix_to_return = []
-        index_to_swap=0
-        for week in range(1, self.weeks + 1):
-            for j in range(1, self.periods + 1):
-                for k in range(j+1, self.periods + 1):
-                    list_match = List_Match(self.weeks, self.periods)
-                    print(j, k)
-                    for i in range(len(self.matchs)):
-                        print(i)
-                        #if i%3== :
-                        #    list_match.append(Match(self.matchs[i].team1, self.matchs[i].team2, self.matchs[i].week,
-                                                    #self.matchs[i].period))
-                        #else:
-                            #list_match.append(Match(self.matchs[i].team1, self.matchs[i].team2, self.matchs[i].week,self.matchs[i].period))
-                    matrix_to_return.append(list_match)
-
-                    i+=1
-        print(i)
-        print (matrix_to_return)
-
-
     def neighborhood(self):
 
         matrix_to_return = []
         for week in range(1, self.weeks + 1):
             for j in range(1, self.periods + 1):
-                for k in range(j, self.periods + 1):
+                for k in range(1, self.periods + 1):
+                    if k>j:
                         #copy_of_configuration = copy.deepcopy(self)
-                        copy_of_configuration=List_Match(self.weeks, self.periods, self.nb_teams)
-                        for i in range(len(self.matchs)):
-                            copy_of_configuration.append( Match(self.matchs[i].team1, self.matchs[i].team2, self.matchs[i].week, self.matchs[i].period ) )
-                            #copy_of_configuration = [list(x) for x in self.matchs]
-                        #print(copy_of_configuration)
+                        copy_of_configuration = self.__copy__()
                         copy_of_configuration.swap_periods_from_week([j, k], week)
-                        copy_of_configuration.evaluate()
                         matrix_to_return.append(copy_of_configuration)
         #print(matrix_to_return)
         return matrix_to_return
-
-
-    def evaluate(self):
-
-        #print(list_match)
-        result = 0
-        for p in range(1,self.periods+1):
-            for t in range(1, self.nb_teams+1):
-            #for t in self.list_match.list_teams:
-                occurence = self.get_occurence_team_in_period(t,p)
-                #occurence =10
-                #occurence= t.get_occurence_period(p)
-                #print("p : ", p, " t : ", t, " occ : ", occurence)
-                if occurence > 2:
-                    result += occurence-2
-        #print (result)
-        self.evaluation= result
-        #return result
-
-
-    def get_evaluation(self):
-        return self.evaluation
 
 
 class Tournament:
@@ -303,13 +222,19 @@ class Tournament:
         return instance
 
     def __init__(self, number_of_teams):
-
-        print("Creating Tournament")
+        #print("Creating Tournament")
         self.teams = number_of_teams
         self.weeks = number_of_teams-1
         self.periods = int(number_of_teams/2)
-        self.list_match = List_Match(self.weeks, self.periods, number_of_teams)
+        self.list_match = List_Match(self.weeks, self.periods)
 
+
+    def __copy__(self):
+
+        t = Tournament(self.teams)
+        #t.list_match= copy.deepcopy(self.list_match)
+        t.list_match = self.list_match.__copy__()
+        return t
 
     def initial_configuration(self):
         list_of_period= []
@@ -339,11 +264,11 @@ class Tournament:
 
         # DIAGONALS
         for i in range(1,self.teams):
-            for j in range(i,self.teams) :
+            for j in range(1,self.teams) :
                 #team 1 doesn't go against team 1
                 if i!=j:
                     for k in range(1, self.teams ):
-                        for l in range(k, self.teams):
+                        for l in range(1, self.teams):
                             if k != l:
                                 if i+j ==k+l or ((i==1) and  (self.teams +j ==k+l) ):
                                     self.list_match.add_diagonal_from_graph(i,j,k,l, list_of_period)
@@ -358,35 +283,95 @@ class Tournament:
             #list_of_period.pop(0)
             self.list_match.append(match)
 
-        self.list_match.evaluate()
-
-
 
     def arbitrary_neighborhood(self):
         random_periods=[]
         while len(random_periods)!=2:
             random_week = random.randrange(1, self.weeks)
             random_periods.clear()
-            #print(self.list_match)
-            #print(random_week)
-            #print(self.list_match.get_available_period_for_week(random_week))
             random_periods= random.sample(self.list_match.get_available_period_for_week(random_week),2)
         #print("SWAPPING : ", random_periods, random_week)
         self.list_match.swap_periods_from_week(random_periods ,random_week)
 
 
-    def get_evaluation(self):
-        return self.list_match.get_evaluation()
+
+
+    def evaluate(self, list_match):
+
+        """
+        result = 0
+
+        for p in range(1,self.periods+1):
+            for t in range(1, self.teams+1):
+                occurence = list_match.get_occurence_team_in_period(t,p)
+                #print("p : ", p, " t : ", t, " occ : ", occurence)
+                if occurence > 2:
+                    result += occurence-2
+        #print (result)
+        """
+
+        result2 = 0
+        periods = []
+        for p in range(1, self.periods + 1):
+            teams = []
+            for t in range(1, self.teams + 1):
+                teams.append(0)
+            periods.append(teams)
+
+        for m in list_match.matchs:
+            periods[m.period-1][m.team1-1] += 1
+            periods[m.period-1][m.team2-1] += 1
+
+        for key in periods:
+            # print(key, periods[key])
+            for key2 in key:
+                if key2 > 2:
+                    result2 += key2 - 2
+        return result2
+
+        """
+        result2=0
+        periods={}
+        for p in range(1, self.periods+1):
+            teams = {}
+            for t in range(1, self.teams+1 ):
+                teams[t]=(0)
+            periods[p]=teams
+
+        for m in list_match.matchs:
+            periods[m.period][m.team1] += 1
+            periods[m.period][m.team2] += 1
+
+        for key in periods:
+            #print(key, periods[key])
+            for key2 in periods[key]:
+                if periods[key][key2]>2:
+                    result2+= periods[key][key2]-2
+        return result2
+        """
+
+        """
+        result3=0
+        matrice = np.zeros((self.periods, self.teams))
+
+        for m in list_match.matchs:
+            matrice[m.period-1, m.team1-1] += 1
+            matrice[m.period-1, m.team2-1] += 1
+            
+
+        for x in matrice:
+            for y in x:
+                if y>2:
+                    result3+= y-2
+        return result3
+
+        """
 
 
 
 
 
-
-
-
-
-        #best_configuration =self.evaluate(self.list_match)
+        best_configuration =self.evaluate(self.list_match)
         #print("INIT SCORE: ", best_configuration)
         #print("COPY: ", copy_of_configuration)
         #x = self.weeks*self.teams
@@ -477,31 +462,51 @@ class Tournament:
         return __str__()
 
 
-def get_best_config_from_neighborhood(neighborhood):
-    #print("dans le best conf")
-    local_best_config = neighborhood[0]
-    local_best_value = local_best_config.get_evaluation()
-    list_config_with_best_value = []
-    for c in neighborhood:
-        current_eval =c.get_evaluation()
-        if current_eval==local_best_value:
-            list_config_with_best_value.append(c)
+    def get_best_config_from_neighborhood(self, neighborhood):
 
-        if current_eval < local_best_value:
-            local_best_value = current_eval
-            list_config_with_best_value.clear()
-            list_config_with_best_value.append(c)
+        local_best_config = neighborhood[0]
+        local_best_value = self.evaluate(local_best_config)
+        for c in neighborhood:
+            if self.evaluate(c) < self.evaluate(local_best_config):
+                local_best_config = c
+                local_best_value = self.evaluate(c)
 
-    local_best_config = random.choice(list_config_with_best_value)
+        list_config_with_best_value= []
+        for c in neighborhood:
+            if local_best_value== self.evaluate(c):
+                list_config_with_best_value.append(c)
 
-    return local_best_config, local_best_value
+        local_best_config= random.choice(list_config_with_best_value)
 
+        return local_best_config
+
+
+'''
+generate_new_eval=True
+while generate_new_eval:
+    for m in tabuList:
+        if current_eval[1]==m:
+            #print("EQ")
+            current_eval = tournament.evaluate_neighborhood(False)
+            #print(m)
+            #print (new_eval[1])
+            continue
+    generate_new_eval=False
+'''
+'''
+while current_eval in tabuList:
+    print("in tabu list")
+    current_eval = tournament.evaluate_neighborhood(False)
+
+tabuList.append(current_eval[1])
+'''
 
 def tabu(tournament ):
     tabuList = []
     tournament.initial_configuration()
 
-    current_eval = tournament.get_evaluation()
+
+    current_eval = tournament.evaluate(tournament.list_match)
     best_eval = current_eval
 
     print("Init eval: ", current_eval)
@@ -509,20 +514,18 @@ def tabu(tournament ):
     current_configuration = tournament.list_match
 
     stop_condition=False
-
-    time = 100
-    max_iteration=10000
+    orig_time = 30
+    time = orig_time
+    max_iteration=100000
 
     while not stop_condition:
 
-        if len(tabuList)>20:
+        if len(tabuList)>10:
             tabuList.pop(0)
 
         neighborhood = current_configuration.neighborhood()
 
-        current =  get_best_config_from_neighborhood(neighborhood )
-
-        local_best_config = current[0]
+        local_best_config = tournament.get_best_config_from_neighborhood(neighborhood)
 
         #if len(tabuList)==len(neighborhood):
         #    print("SAME SIZE")
@@ -530,12 +533,8 @@ def tabu(tournament ):
         #else:
         while local_best_config in tabuList:
             if len(neighborhood)>1:
-                #print("trying to remove :", local_best_config)
-                #print("neig:", neighborhood)
                 neighborhood.remove(local_best_config)
-                current = get_best_config_from_neighborhood(neighborhood)
-                local_best_config= current[0]
-                current_eval=current[1]
+                local_best_config= tournament.get_best_config_from_neighborhood(neighborhood)
             elif len(neighborhood)==1:
                 local_best_config=neighborhood[0]
                 neighborhood.remove(local_best_config)
@@ -543,7 +542,7 @@ def tabu(tournament ):
         #print("already in tabu list, new local best config :",local_best_config )
         tabuList.append(local_best_config)
 
-        current_eval = current[1]
+        current_eval = tournament.evaluate(local_best_config)
         current_configuration=local_best_config
 
             #print("best local config:", local_best_config, "score: ", current_eval)
@@ -564,7 +563,7 @@ def tabu(tournament ):
             print("RESETTING TABU LIST")
             current_configuration = best_configuration
             tabuList.clear()
-            time=100
+            time=orig_time
 
 
 
@@ -572,32 +571,37 @@ def tabu(tournament ):
 
     if best_eval==0:
         print("VALID SCH", current_configuration)
-        print(current_configuration.normalized_string())
     else:
         print("no valid sch")
 
 #tabu()
 
-def random_swap(tournament):
 
-    tournament.initial_configuration()
-    tournament.arbitrary_neighborhood()
 
-    eval = tournament.list_match.get_evaluation()
-    while eval!=0:
-        tournament.arbitrary_neighborhood()
-        tournament.list_match.evaluate()
-        eval = tournament.list_match.get_evaluation()
-        print (eval)
-    print(tournament)
-
-tournament = Tournament(16)
+'''
 if tournament:
 
-
-    #random_swap(tournament)
-
     tabu(tournament)
-    #tournament.initial_configuration()
-    #tournament.list_match.neighborhood_opt()
 
+    tournament.initial_configuration()
+    print(tournament)
+    eval = tournament.evaluate_neighborhood()
+    while eval != 0:
+        eval = tournament.evaluate_neighborhood()
+    print(tournament)
+
+    tournament.arbitrary_neighborhood()
+    print("AFTER SWAAAPP")
+    print(tournament)
+    print(tournament.evaluate(tournament.list_match))
+
+
+    while tournament.evaluate(tournament.list_match)!=0:
+        tournament.arbitrary_neighborhood()
+        print (tournament.evaluate(tournament.list_match))
+    print(tournament)
+'''
+
+#tournament = Tournament(14)
+#if tournament:
+#    tabu(tournament)
