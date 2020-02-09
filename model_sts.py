@@ -192,12 +192,12 @@ class List_Match:
         matrix_to_return = []
         for week in range(1, self.weeks + 1):
             for j in range(1, self.periods + 1):
-                for k in range(1, self.periods + 1):
-                    if k > j:
-                        # copy_of_configuration = copy.deepcopy(self)
-                        copy_of_configuration = self.__copy__()
-                        copy_of_configuration.swap_periods_from_week([j, k], week)
-                        matrix_to_return.append(copy_of_configuration)
+                for k in range(j+1, self.periods + 1):
+                    #if k > j:
+                    # copy_of_configuration = copy.deepcopy(self)
+                    copy_of_configuration = self.__copy__()
+                    copy_of_configuration.swap_periods_from_week([j, k], week)
+                    matrix_to_return.append(copy_of_configuration)
         # print(matrix_to_return)
         return matrix_to_return
 

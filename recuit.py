@@ -8,8 +8,7 @@ matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 
 
-number_of_teams= 12
-max_score = (number_of_teams/2)*(number_of_teams-1)
+
 
 
 def temperature(k, kmax):
@@ -26,15 +25,20 @@ def proba(delta):
 
     return  result
 
-def recuit_simule(tournament):
+def recuit_simule(size =6, max_iteration=10000):
+    number_of_teams = size
+    #max_score = (number_of_teams / 2) * (number_of_teams - 1)
 
+    tournament = model_sts.Tournament(number_of_teams)
     tournament.initial_configuration()
+    max_score = min(int(len(tournament.list_match.neighborhood()) * (tournament.weeks/10)), 2000)
+
     best_eval = tournament.evaluate(tournament.list_match)/max_score
     current_configuration = tournament.list_match
     best_configuration = tournament.list_match
     best_eval_so_far = best_eval
     k=1
-    kmax=100000
+    kmax=max_iteration
     score=[]
     time=[]
     time_not_ameliored=0
@@ -56,7 +60,6 @@ def recuit_simule(tournament):
         #energie = abs(current_eval-best_eval_so_far) / 5 + (abs(current_eval - best_eval) / 5)
         temp = temperature(k,kmax)
         delta =  -energie /(temp*0.25)
-        #delta = -2/temp
         prob = proba(delta)
         rnd = random.random()
 
@@ -92,13 +95,18 @@ def recuit_simule(tournament):
 
     print("\nBEST EVAL SO FAR : ", best_eval_so_far, " Configuration: ", best_configuration)
     plt.plot(time,score,linestyle='solid', linewidth=0.5)
+    plt.ylabel("Score Configuration")
+    plt.xlabel("Itération")
     #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
     plt.show()
+    has_finished=False
+    if best_eval_so_far==0:
+        has_finished=True
 
-    return best_configuration
+    return has_finished, best_configuration
 
 
-tournament = model_sts.Tournament(number_of_teams)
-if tournament:
-    recuit_simule(tournament)
+#tournament = model_sts.Tournament(number_of_teams)
+#if tournament:
+#    recuit_simule(tournament)
 

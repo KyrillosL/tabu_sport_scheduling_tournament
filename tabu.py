@@ -1,6 +1,15 @@
 import model_sts
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
+import random
 
-def tabu(tournament ):
+
+def get_random_tabu_size():
+    return random.randrange(500, 600)
+
+def tabu(size =6, max_iteration=10000):
+    tournament = model_sts.Tournament(size)
     tabuList = []
     tournament.initial_configuration()
 
@@ -12,24 +21,27 @@ def tabu(tournament ):
     best_configuration = tournament.list_match
     current_configuration = tournament.list_match
 
+    score=[]
+    tab_time=[]
+
     stop_condition=False
-    orig_time = 30
+    tabu_size=get_random_tabu_size()
+    orig_time = min(int(len(current_configuration.neighborhood()) * (tournament.weeks/10)), 2000)
+    #orig_time=30
     time = orig_time
-    max_iteration=10000000
+    i=0
+
 
     while not stop_condition:
 
-        if len(tabuList)>10:
+        if len(tabuList)>tabu_size:
             tabuList.pop(0)
 
         neighborhood = current_configuration.neighborhood()
 
         local_best_config = tournament.get_best_config_from_neighborhood(neighborhood)
 
-        #if len(tabuList)==len(neighborhood):
-        #    print("SAME SIZE")
-        #    time=0
-        #else:
+
         while local_best_config in tabuList:
             if len(neighborhood)>1:
                 neighborhood.remove(local_best_config)
@@ -38,39 +50,50 @@ def tabu(tournament ):
                 local_best_config=neighborhood[0]
                 neighborhood.remove(local_best_config)
 
-        #print("already in tabu list, new local best config :",local_best_config )
         tabuList.append(local_best_config)
 
         current_eval = tournament.evaluate(local_best_config)
         current_configuration=local_best_config
 
-            #print("best local config:", local_best_config, "score: ", current_eval)
+        print("C ", current_eval, " B: ", best_eval, " size: ", len(tabuList), " time: ", time, " config: ",current_configuration)
 
-        print("C ", current_eval, " B: ", best_eval, " size: ", len(tabuList), " time: ", time, " config: ",
-              current_configuration)#, " best config: ", best_configuration)
-        #input(":")
-        if max_iteration <=0 or current_eval==0:
+        if i >= max_iteration  or current_eval==0:
             stop_condition=True
 
         if current_eval<best_eval:
             best_eval=current_eval
             best_configuration = current_configuration
 
-        time-=1
+        else:
+            time-=1
 
         if time <=0:
             print("RESETTING TABU LIST")
             current_configuration = best_configuration
             tabuList.clear()
+            tabu_size = get_random_tabu_size()
             time=orig_time
 
-        max_iteration-=1
+        #max_iteration-=1
+        i+=1
+        score.append(best_eval)
+        tab_time.append(i)
 
+    has_finished=False
     if best_eval==0:
         print("VALID SCH", current_configuration)
+        has_finished=True
     else:
         print("no valid sch")
 
+    plt.plot(tab_time,score,linestyle='solid', linewidth=0.5)
+    plt.ylabel("Score Configuration")
+    plt.xlabel("Itération")
+    #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
+    plt.show()
+
+
+    return has_finished, best_configuration
 
 
 
@@ -99,6 +122,6 @@ if tournament:
     print(tournament)
 '''
 
-tournament = model_sts.Tournament(20)
-if tournament:
-    tabu(tournament)
+#tournament = model_sts.Tournament(12)
+#if tournament:
+#    tabu(tournament)
