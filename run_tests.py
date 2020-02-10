@@ -10,15 +10,15 @@ import numpy as np
 #t = Tabu
 #r = Recuit
 #rw= random walk
-method = 'h'
+method = 'rw'
 
 
 
 list_size=[6,8,10,12]#,14,16,18]
 #list_size=[6]
-num_pass = 1
+num_pass = 5
 all_result={}
-max_iteration=10000
+max_iteration=100000
 
 for x in list_size:
     print("nombre équipes ", x)

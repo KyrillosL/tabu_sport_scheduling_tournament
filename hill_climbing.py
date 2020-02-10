@@ -13,7 +13,6 @@ def hill_climbing(size =6, max_iteration=10000):
 
     tournament.initial_configuration()
 
-
     current_eval = tournament.evaluate(tournament.list_match)
     best_eval = current_eval
 
@@ -26,7 +25,7 @@ def hill_climbing(size =6, max_iteration=10000):
 
     stop_condition=False
     i=0
-
+    print("C ", current_eval, " B: ", best_eval, " config: ", current_configuration, "INIT")
 
     while not stop_condition:
 
@@ -35,12 +34,12 @@ def hill_climbing(size =6, max_iteration=10000):
         current_eval = tournament.evaluate(local_best_config)
 
 
-        #print("C ", current_eval, " B: ", best_eval, " config: ",current_configuration)
+        print("C ", current_eval, " B: ", best_eval, " config: ",current_configuration)
 
         if i >= max_iteration  or current_eval==0:
             stop_condition=True
 
-        if current_eval<best_eval:
+        if current_eval<=best_eval:
             best_eval=current_eval
             best_configuration = current_configuration
 
@@ -59,7 +58,7 @@ def hill_climbing(size =6, max_iteration=10000):
     plt.ylabel("Score Configuration")
     plt.xlabel("Itération")
     #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
-    #plt.show()
+    plt.show()
 
 
     return has_finished, best_configuration
