@@ -24,3 +24,5 @@ genetique/__pycache__/operator_gen_ALL_ALGO.cpython-36.pyc
 genetique/__pycache__/operator_selector_ALL_ALGO.cpython-36.pyc
 
 genetique/__pycache__/plot.cpython-36.pyc
+
+*.pyc

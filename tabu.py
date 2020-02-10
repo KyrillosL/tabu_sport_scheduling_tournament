@@ -5,8 +5,8 @@ from matplotlib import pyplot as plt
 import random
 
 
-def get_random_tabu_size():
-    return random.randrange(500, 600)
+def get_random_tabu_size(weeks):
+    return random.randrange(10, weeks*50)
 
 def tabu(size =6, max_iteration=10000):
     tournament = model_sts.Tournament(size)
@@ -25,7 +25,7 @@ def tabu(size =6, max_iteration=10000):
     tab_time=[]
 
     stop_condition=False
-    tabu_size=get_random_tabu_size()
+    tabu_size=get_random_tabu_size(tournament.weeks)
     orig_time = min(int(len(current_configuration.neighborhood()) * (tournament.weeks/10)), 2000)
     #orig_time=30
     time = orig_time
@@ -71,7 +71,7 @@ def tabu(size =6, max_iteration=10000):
             print("RESETTING TABU LIST")
             current_configuration = best_configuration
             tabuList.clear()
-            tabu_size = get_random_tabu_size()
+            tabu_size = get_random_tabu_size(tournament.weeks)
             time=orig_time
 
         #max_iteration-=1
@@ -90,7 +90,7 @@ def tabu(size =6, max_iteration=10000):
     plt.ylabel("Score Configuration")
     plt.xlabel("Itération")
     #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
-    plt.show()
+    #plt.show()
 
 
     return has_finished, best_configuration

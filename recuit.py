@@ -27,11 +27,11 @@ def proba(delta):
 
 def recuit_simule(size =6, max_iteration=10000):
     number_of_teams = size
-    #max_score = (number_of_teams / 2) * (number_of_teams - 1)
+    max_score = (number_of_teams / 2) * (number_of_teams - 1)
 
     tournament = model_sts.Tournament(number_of_teams)
     tournament.initial_configuration()
-    max_score = min(int(len(tournament.list_match.neighborhood()) * (tournament.weeks/10)), 2000)
+    max_not_ameliored = min(int(len(tournament.list_match.neighborhood()) * (tournament.weeks/10)), 2000)
 
     best_eval = tournament.evaluate(tournament.list_match)/max_score
     current_configuration = tournament.list_match
@@ -44,10 +44,6 @@ def recuit_simule(size =6, max_iteration=10000):
     time_not_ameliored=0
     while k<kmax and best_eval >0:
 
-
-        if best_eval_so_far==0:
-            print("Solution found: ", best_configuration)
-            break
         #input()
         #neighborhood = current_configuration.neighborhood()
         #bc = tournament.get_best_config_from_neighborhood(neighborhood)
@@ -55,6 +51,7 @@ def recuit_simule(size =6, max_iteration=10000):
         tournament.arbitrary_neighborhood()
         current_eval = tournament.evaluate(tournament.list_match)/max_score
 
+        #energie = abs(best_eval-current_eval)*10
         energie = (current_eval + (current_eval-best_eval)/4)*2
         #energie =  ((current_eval/5) + (abs(current_eval-best_eval)/5)) # /(number_of_teams/6) CELLE CI ETAIT OK.
         #energie = abs(current_eval-best_eval_so_far) / 5 + (abs(current_eval - best_eval) / 5)
@@ -63,12 +60,11 @@ def recuit_simule(size =6, max_iteration=10000):
         prob = proba(delta)
         rnd = random.random()
 
-
-
         assigning = False
-        if current_eval<=best_eval or (prob >rnd and time_not_ameliored>max_score) :
+        if current_eval<best_eval:
+            assigning = True
+        elif (prob >rnd and time_not_ameliored>max_not_ameliored) :
             assigning=True
-            time_not_ameliored=0
         else:
             time_not_ameliored+=1
 
@@ -81,7 +77,7 @@ def recuit_simule(size =6, max_iteration=10000):
             sys.stdout.flush()
 
         if assigning :
-
+            time_not_ameliored=0
             best_eval= current_eval
             best_configuration = current_configuration
             if best_eval <= best_eval_so_far:
