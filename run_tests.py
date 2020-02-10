@@ -1,17 +1,24 @@
 import tabu
 import time
 import recuit
+import hill_climbing
+import random_walk
 import numpy as np
 
 
+#h = Hill Climbing
+#t = Tabu
+#r = Recuit
+#rw= random walk
+method = 'h'
 
 
 
-#list_size=[6,8,10,12]#,14,16,18]
-list_size=[10]
+list_size=[6,8,10,12]#,14,16,18]
+#list_size=[6]
 num_pass = 1
 all_result={}
-max_iteration=1000000
+max_iteration=10000
 
 for x in list_size:
     print("nombre équipes ", x)
@@ -19,13 +26,22 @@ for x in list_size:
     for i in range(num_pass):
 
         start_time = time.time()
-        #has_finished,_ =tabu.tabu(x, max_iteration)
-        has_finished,_ =recuit.recuit_simule(x, max_iteration)
+
+        if method == 't':
+            has_finished,_ =tabu.tabu(x, max_iteration)
+        elif method == 'r':
+            has_finished,_ =recuit.recuit_simule(x, max_iteration)
+        elif method== 'h':
+            has_finished, _ = hill_climbing.hill_climbing(x, max_iteration)
+        elif method== 'rw':
+            has_finished, _ = random_walk.ranomd_walk(x, max_iteration)
+
         if (has_finished):
             elapsed_time = time.time() - start_time
             list_mean.append(elapsed_time)
         print(list_mean)
-    all_result[x]=np.mean(list_mean)
+    if len(list_mean)>0:
+        all_result[x]=np.mean(list_mean)
     print(all_result)
 print("END")
 print(all_result)
