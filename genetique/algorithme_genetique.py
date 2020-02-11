@@ -78,10 +78,10 @@ class Algorithme_genetique:
                 self.method = op_sel.basic_operator_1_flip(self.population.select_best_agents(1).get(0))
 
             start = time.time()
-            #if not all_score:
-                #myplot = myplt.Myplot(method, keep_degrading, 3, self.nombre_agents_par_population, self.taille_agent, number_of_pass)
+            if not all_score:
+                myplot = myplt.Myplot(method, keep_degrading, 3, self.nombre_agents_par_population, self.taille_agent, number_of_pass)
 
-            #myplot.turn_off_interactive_mode()
+            myplot.turn_off_interactive_mode()
             self.iteration = 0
             #self.reinit()
 
@@ -130,21 +130,21 @@ class Algorithme_genetique:
                     for x in self.population.agents:
                         x.age+=1
                     '''
-                #if not all_score:
-                 #   myplot.score = self.population.select_best_agents(1).get(0).get_score()
+                if not all_score:
+                    myplot.score = self.population.select_best_agents(1).get(0).get_score()
                 score = self.population.select_best_agents(1).get(0).get_score()
 
 
 
                 if self.iteration% refresh_rate_counter==0:
-                    """
+
                     if not all_score:
                         myplot.time.append(self.iteration)
                         myplot.data_score.append(myplot.score)
                         for i in range(myplot.nb_op):
                             myplot.list_list_data_prob[i].append(self.method.list_operators[i].probability)
                             myplot.list_used_op[i].append(self.method.list_operators[i].times_used)
-                    """
+
 
                     if realtime_counter:
                         end = time.time()
@@ -172,14 +172,14 @@ class Algorithme_genetique:
                     '\rScore : %.2f Iteration : %i Time %.2f' % (score, self.iteration, end - start))
                 sys.stdout.flush()
 
-                #final_plotter.add_plot(myplot.time, myplot.data_score, myplot.list_list_data_prob,
-                                       #myplot.list_used_op)
+                final_plotter.add_plot(myplot.time, myplot.data_score, myplot.list_list_data_prob,
+                                       myplot.list_used_op)
             print(" \n model ", method, " pass ", a, " itération ", self.iteration, " time ", end - start)
-            #if all_score:
+            if all_score:
                 #print("ADDING", list_data)
-                #final_plotter.add_plot_score_time(list_time, list_data)
+                final_plotter.add_plot_score_time(list_time, list_data)
 
-        '''
+
         if all_score:
             final_plotter.calculate_means_score_time(number_of_pass)
         else:
@@ -190,11 +190,11 @@ class Algorithme_genetique:
             myplot.list_used_op = final_plotter.final_used
             temps_moyen = sum(list_temps) / len(list_temps)
             iteration_moyenne = sum(list_it) / len(list_it)
-            #myplot.update_plot(temps_moyen, itetarion_moyen=iteration_moyenne)
+            myplot.update_plot(temps_moyen, itetarion_moyen=iteration_moyenne)
             myplot.turn_off_interactive_mode()
             myplot.update_plot(temps_moyen, itetarion_moyen=iteration_moyenne)
             myplot.show(block=True)
-        '''
+
 
         #return final_plotter.final_time, final_plotter.final_score
 

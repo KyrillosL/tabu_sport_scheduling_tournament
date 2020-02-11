@@ -11,9 +11,9 @@ from matplotlib import pyplot as plt
 
 
 parametres_algo = {
-"nombre_agents_par_population":1000,
+"nombre_agents_par_population":2000,
 "taille_agent":8,
-"nb_indiv_to_select":20
+"nb_indiv_to_select":100
 }
 
 
@@ -28,5 +28,5 @@ ag = ag.Algorithme_genetique(parametres_algo)
 #6= BASIC 3N VRAIMENT BIEN
 #refresh_rate_counter=parametres_algo["taille_agent"]/10
 
-ag.solve(method=6, realtime_plot=False, refresh_rate_plot=1, realtime_counter=True,refresh_rate_counter=1, keep_degrading=True, one_indiv=False, stop_after=10000,
+ag.solve(method=6, realtime_plot=True, refresh_rate_plot=1, realtime_counter=True,refresh_rate_counter=1, keep_degrading=True, one_indiv=False, stop_after=10000,
                            number_of_pass=1, all_score = False)

@@ -70,7 +70,7 @@ class best_operator_oracle(Operator_Selector):
             x.compute_Score(self.agent)
         best_operator = max(self.list_operators)
 
-        if keep_degrading or best_operator.score > self.agent.get_score():
+        if keep_degrading or best_operator.score < self.agent.get_score():
             new_agent = best_operator.mutate(self.agent)
             # self.population.select_best_agents(1).set(0, new_agent)
             best_operator.times_used += 1
@@ -152,7 +152,7 @@ class adaptive_pursuit(Operator_Selector):
 
     def __init__(self, population, pmin=0.2, pmax=0.8, beta=0.5):
         Operator_Selector.__init__(self, population)
-        self.beta = 0.9
+        self.beta = 0.5
         self.pmin = pmin
         self.pmax = pmax
 
@@ -193,7 +193,7 @@ class adaptive_pursuit(Operator_Selector):
         # input()
         chosen_op.compute_Score(self.agent)
 
-        if keep_degrading or chosen_op.score > self.agent.get_score():
+        if keep_degrading or chosen_op.score < self.agent.get_score():
             new_agent = chosen_op.mutate(self.agent)
 
             chosen_op.times_used += 1
@@ -251,7 +251,7 @@ class upper_confidence_bound(Operator_Selector):  # 𝐴𝑡≐𝑎𝑟𝑔𝑚�
 
         # print("best_operator ", best_operator, " pop ", self.agent.score())
         self.iteration += 1
-        if keep_degrading or best_operator.score > self.agent.get_score():
+        if keep_degrading or best_operator.score < self.agent.get_score():
             new_agent = best_operator.mutate(self.agent)
             # self.population.select_best_agents(1).set(0, new_agent)
             # best_operator.probability=1
