@@ -39,9 +39,9 @@ def ranomd_walk(size =6, max_iteration=10000):
         if i >= max_iteration  or current_eval==0:
             stop_condition=True
 
-        if current_eval<best_eval:
-            best_eval=current_eval
-            best_configuration = current_configuration
+
+        best_eval=current_eval
+        best_configuration = current_configuration
 
         i+=1
         score.append(best_eval)

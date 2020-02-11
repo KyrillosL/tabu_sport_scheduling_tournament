@@ -13,14 +13,13 @@ import numpy as np
 method = 'rw'
 
 
-
-list_size=[6,8,10,12]#,14,16,18]
-#list_size=[6]
+max_iteration=1000000
+equipes=[6, 8, 10, 12]#,14,16,18]
+#equipes=[8]
 num_pass = 5
 all_result={}
-max_iteration=100000
 
-for x in list_size:
+for x in equipes:
     print("nombre équipes ", x)
     list_mean = []
     for i in range(num_pass):
@@ -45,4 +44,3 @@ for x in list_size:
     print(all_result)
 print("END")
 print(all_result)
-print("END")
