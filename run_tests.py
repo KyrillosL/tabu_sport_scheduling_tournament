@@ -10,13 +10,13 @@ import numpy as np
 #t = Tabu
 #r = Recuit
 #rw= random walk
-method = 'rw'
+method = 't'
 
 
 max_iteration=1000000
-equipes=[6, 8, 10, 12]#,14,16,18]
-#equipes=[8]
-num_pass = 5
+#equipes=[6, 8, 10, 12]#,14,16,18]
+equipes=[8]
+num_pass = 1
 all_result={}
 
 for x in equipes:

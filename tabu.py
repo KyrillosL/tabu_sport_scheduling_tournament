@@ -90,7 +90,7 @@ def tabu(size =6, max_iteration=10000):
     plt.ylabel("Score Configuration")
     plt.xlabel("Itération")
     #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
-    #plt.show()
+    plt.show()
 
 
     return has_finished, best_configuration
