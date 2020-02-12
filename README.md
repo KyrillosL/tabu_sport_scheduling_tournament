@@ -7,3 +7,5 @@ Le STS consiste à faire rencontrer un nombre n d'équipes sur n-1 semaines, cha
 - Pour l'algorithme génétique, aller dans génétique/main.py. Choisir le nombre maximum d'itérations, d'équipes, la taille de la population et l'algorithme (ucb, exp3, adaptive pursuit etc.) puis exécuter le script. 
 
 - Les résultats sortiront dans la console avec la meilleure configuration trouvée. 
+
+- Il est possible d'afficher les graphes  de score en mettant show_graph à vrai, de même pour le debug.

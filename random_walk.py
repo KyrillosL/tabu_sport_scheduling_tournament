@@ -8,7 +8,7 @@ import random
 def get_random_tabu_size(weeks):
     return random.randrange(10, weeks*50)
 
-def ranomd_walk(size =6, max_iteration=10000):
+def ranomd_walk(size =6, max_iteration=10000, show_graph=True, debug= False):
     tournament = model_sts.Tournament(size)
 
     tournament.initial_configuration()
@@ -33,8 +33,8 @@ def ranomd_walk(size =6, max_iteration=10000):
         tournament.arbitrary_neighborhood()
         current_eval = tournament.evaluate(tournament.list_match)
 
-
-        #print("C ", current_eval, " B: ", best_eval, " config: ",current_configuration)
+        if debug:
+            print("C ", current_eval, " B: ", best_eval, " config: ",current_configuration)
 
         if i >= max_iteration  or current_eval==0:
             stop_condition=True
@@ -58,7 +58,8 @@ def ranomd_walk(size =6, max_iteration=10000):
     plt.ylabel("Score Configuration")
     plt.xlabel("Itération")
     #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
-    #plt.show()
+    if show_graph:
+        plt.show()
 
 
     return has_finished, best_configuration

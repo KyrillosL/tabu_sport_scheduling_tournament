@@ -14,10 +14,13 @@ method = 't'
 
 
 max_iteration=1000000
-#equipes=[6, 8, 10, 12]#,14,16,18]
-equipes=[6]
+#equipes=[8, 10, 12]#,14,16,18]
+equipes=[8]
 num_pass = 1
 all_result={}
+
+show_graph =True
+debug = False
 
 for x in equipes:
     print("nombre équipes ", x)
@@ -27,13 +30,13 @@ for x in equipes:
         start_time = time.time()
 
         if method == 't':
-            has_finished,_ =tabu.tabu(x, max_iteration)
+            has_finished,_ =tabu.tabu(x, max_iteration, show_graph, debug)
         elif method == 'r':
-            has_finished,_ =recuit.recuit_simule(x, max_iteration)
+            has_finished,_ =recuit.recuit_simule(x, max_iteration, show_graph, debug)
         elif method== 'h':
-            has_finished, _ = hill_climbing.hill_climbing(x, max_iteration)
+            has_finished, _ = hill_climbing.hill_climbing(x, max_iteration, show_graph, debug)
         elif method== 'rw':
-            has_finished, _ = random_walk.ranomd_walk(x, max_iteration)
+            has_finished, _ = random_walk.ranomd_walk(x, max_iteration, show_graph, debug)
 
         if (has_finished):
             elapsed_time = time.time() - start_time

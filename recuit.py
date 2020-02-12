@@ -25,7 +25,7 @@ def proba(delta):
 
     return  result
 
-def recuit_simule(size =6, max_iteration=10000):
+def recuit_simule(size =6, max_iteration=10000, show_graph=True, debug= False):
     number_of_teams = size
     max_score = (number_of_teams / 2) * (number_of_teams - 1)
 
@@ -94,7 +94,8 @@ def recuit_simule(size =6, max_iteration=10000):
     plt.ylabel("Score Configuration")
     plt.xlabel("Itération")
     #plt.scatter(time, score, s=0.01)  # ,  linestyle='solid', linewidth=1)
-    plt.show()
+    if show_graph:
+        plt.show()
     has_finished=False
     if best_eval_so_far==0:
         has_finished=True
