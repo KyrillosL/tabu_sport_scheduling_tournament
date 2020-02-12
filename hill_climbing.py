@@ -25,7 +25,7 @@ def hill_climbing(size =6, max_iteration=10000):
 
     stop_condition=False
     i=0
-    print("C ", current_eval, " B: ", best_eval, " config: ", current_configuration, "INIT")
+    #print("C ", current_eval, " B: ", best_eval, " config: ", current_configuration, "INIT")
 
     while not stop_condition:
 
@@ -34,7 +34,7 @@ def hill_climbing(size =6, max_iteration=10000):
         current_eval = tournament.evaluate(local_best_config)
 
 
-        print("C ", current_eval, " B: ", best_eval, " config: ",current_configuration)
+        #print("C ", current_eval, " B: ", best_eval, " config: ",current_configuration)
 
         if i >= max_iteration  or current_eval==0:
             stop_condition=True

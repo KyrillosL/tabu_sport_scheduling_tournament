@@ -195,7 +195,7 @@ class Algorithme_genetique:
             myplot.update_plot(temps_moyen, itetarion_moyen=iteration_moyenne)
             myplot.show(block=True)
 
-
+        print(self.population.select_best_agents(1).get(0))
         #return final_plotter.final_time, final_plotter.final_score
 
 

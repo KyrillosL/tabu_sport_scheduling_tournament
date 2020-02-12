@@ -50,7 +50,7 @@ class List_Match:
         return False
 
     def __str__(self):
-        '''
+
         #string_to_return= str(self.periods)+ str(self.weeks)+"\n"
         string_to_return = ""
         for i in range(1,self.weeks+1):
@@ -63,13 +63,14 @@ class List_Match:
                 string_to_return+="\n"
             string_to_return += "\n"
         return string_to_return
-        '''
+        """
         string_to_return = ""
         for m in self.matchs:
             string_to_return += str(m.team1)
             string_to_return += str(m.team2)
             string_to_return += " "
         return string_to_return
+        """
 
     def __repr__(self):
         '''

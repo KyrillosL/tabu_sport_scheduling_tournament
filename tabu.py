@@ -55,7 +55,7 @@ def tabu(size =6, max_iteration=10000):
         current_eval = tournament.evaluate(local_best_config)
         current_configuration=local_best_config
 
-        print("C ", current_eval, " B: ", best_eval, " size: ", len(tabuList), " time: ", time, " config: ",current_configuration)
+        #print("C ", current_eval, " B: ", best_eval, " size: ", len(tabuList), " time: ", time, " config: ",current_configuration)
 
         if i >= max_iteration  or current_eval==0:
             stop_condition=True

@@ -15,7 +15,7 @@ method = 't'
 
 max_iteration=1000000
 #equipes=[6, 8, 10, 12]#,14,16,18]
-equipes=[8]
+equipes=[6]
 num_pass = 1
 all_result={}
 

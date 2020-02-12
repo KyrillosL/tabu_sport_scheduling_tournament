@@ -11,12 +11,12 @@ from matplotlib import pyplot as plt
 
 
 parametres_algo = {
-"nombre_agents_par_population":2000,
-"taille_agent":8,
-"nb_indiv_to_select":100
+"nombre_agents_par_population":500,
+"taille_agent":6,
+"nb_indiv_to_select":10
 }
 
-
+print("Lanement de l'ago gen")
 ag = ag.Algorithme_genetique(parametres_algo)
 
 #0 = Oracle Myope OK MARCHE BIEN
